@@ -11,7 +11,8 @@ template <class Type> class MyList{
 
 		bool push(Type _element, const int &_position = 0);
 
-//		void pushMiddle();
+		void popBack();
+
 		void show();
 
 	protected:
@@ -22,8 +23,6 @@ template <class Type> class MyList{
 
 		void changeID(const unsigned int _id);
 
-
-	private:
 		Type element;
 		int id;
 		int size;
@@ -36,7 +35,7 @@ template <class Type> MyList<Type>::MyList(){
 	previous = NULL;
 	element = 0;
 	size = 1;
-	id = 0;
+	id = -1;
 }
 
 template <class Type> MyList<Type>::MyList(Type _element){
@@ -44,7 +43,7 @@ template <class Type> MyList<Type>::MyList(Type _element){
 	previous = NULL;
 	element = _element;
 	size = 1;
-	id = 0;
+	id = -1;
 }
 
 template <class Type> MyList<Type>::~MyList(){
@@ -139,7 +138,9 @@ template <class Type> void MyList<Type>::setID(const unsigned int &_id){
 }
 
 template <class Type> void MyList<Type>::show(){
-	std::cout<<element;
+	if(id!=-1){
+		std::cout<<element;
+	}
 	if(next!=NULL){
 		next->show();
 	}
@@ -148,15 +149,35 @@ template <class Type> void MyList<Type>::show(){
 	}
 }
 
+template <class Type> void MyList<Type>::popBack(){
+	if(next != NULL){
+		if(next->next == NULL){
+			delete next;
+			next = NULL;
+			size--;
+		}
+		else{
+			next->popBack();	
+		}
+	}
+}
+
 
 int main(){
-	MyList<double> list(1.0);
+	MyList<double> list;
 	//std::cout<<"init\n";
-	list.pushBack();
+	list.pushBack(1.0);
 	//std::cout<<"pushBack\n";
-	list.push(2.0, 1);
-	list.push(3.0, 1);
-	list.push(4.0, 1);
+	list.push(2.0, 0);
+	list.push(3.0, 0);
+	list.push(4.0, 0);
+	list.push(4.0, 0);
+	list.push(5.0, 0);
+	list.popBack();
+	list.show();
+	list.push(6.0, 0);
+	list.push(7.0, 0);
+	list.push(8.0, 0);
 	list.show();
 	//std::cout<<"push\n";
 	return 0;
